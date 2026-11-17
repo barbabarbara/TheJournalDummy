@@ -1,0 +1,25 @@
+# Dependencies and local tool caches
+node_modules/
+.fallow/
+.cache/
+
+# Secrets and configuration
+.env
+.env.*
+!.env.example
+
+# Python caches (optional browser tests)
+__pycache__/
+*.py[cod]
+.venv/
+
+# Browser-test output
+playwright-report/
+test-results/
+
+# Local/editor temporary files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

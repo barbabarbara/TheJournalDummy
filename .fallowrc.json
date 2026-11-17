@@ -1,0 +1,8 @@
+
+{
+  "entry": [
+    "assets/js/pages/app.js",
+    "assets/js/pages/post.js",
+    "assets/css/styles.css"
+  ]
+}

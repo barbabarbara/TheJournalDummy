@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Metadata and responsive settings -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Read stories and join the conversation at The Journal."
+    />
+    <title>Article | The Journal</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg" />
+
+    <!-- Shared typography and styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script type="module" src="./assets/js/pages/post.js"></script>
+  </head>
+
+  <body>
+    <!-- Keyboard users can skip the navigation. -->
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- ========== SHARED HEADER ========== -->
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="./index.html" aria-label="The Journal homepage">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span>the journal<span class="brand-dot">.</span></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <a class="nav-link" href="./index.html">Home</a>
+          <a class="nav-link" href="./index.html#about">About</a>
+          <a class="nav-cta" href="./index.html#stories">
+            All Stories <span aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ========== ARTICLE DETAILS ========== -->
+    <main id="main" tabindex="-1">
+      <div class="shell detail-shell">
+        <a class="back-link" href="./index.html#stories">
+          <span aria-hidden="true">←</span> Back to all stories
+        </a>
+
+        <!-- Filled by JavaScript if a request fails. -->
+        <div class="notice notice-error" id="post-error" role="alert" hidden>
+          <span id="post-error-message"></span>
+          <button class="notice-action" id="retry-post" type="button">
+            Try again
+          </button>
+        </div>
+
+        <!-- The article data is inserted safely by post.js. -->
+        <article
+          class="article-content"
+          id="post-article"
+          aria-labelledby="post-title"
+          aria-busy="true"
+        >
+          <header class="article-header">
+            <p class="eyebrow" id="post-number">LOADING STORY</p>
+            <h1 class="article-title" id="post-title">Loading story…</h1>
+            <div class="article-meta" id="post-meta" hidden></div>
+            <p class="preview-note" id="post-status" role="status">
+              Retrieving article details…
+            </p>
+          </header>
+
+          <!-- Grey illustration created with CSS (no article image download). -->
+          <div class="article-visual" aria-hidden="true">
+            <span class="article-visual-asterisk">✳</span>
+            <span class="article-visual-caption"
+              >STORIES &amp; PERSPECTIVES</span
+            >
+          </div>
+
+          <!-- Full article text, never a truncated preview. -->
+          <div class="article-body-wrap">
+            <div id="post-content"></div>
+          </div>
+
+          <footer class="article-footer" id="post-footer" hidden>
+            <!-- Keep original API tags separate from suggested topics. -->
+            <div class="article-taxonomy">
+              <div class="taxonomy-group">
+                <p class="taxonomy-label" id="post-tags-heading">
+                  Article tags
+                </p>
+                <div
+                  class="tag-list"
+                  id="post-tags"
+                  aria-labelledby="post-tags-heading"
+                ></div>
+              </div>
+            </div>
+            <!-- Story actions are enabled after the article loads. -->
+            <div class="article-actions">
+              <button
+                class="button button-dark"
+                id="edit-post"
+                type="button"
+                disabled
+              >
+                Edit story <span aria-hidden="true">↗</span>
+              </button>
+              <button
+                class="button button-danger"
+                id="delete-post"
+                type="button"
+                disabled
+              >
+                Delete story
+              </button>
+
+              <!-- Restore the original demo data -->
+              <button
+                id="reset-demo"
+                class="button button-outline"
+                type="button"
+              >
+                <span aria-hidden="true">↶</span> Reset to default
+              </button>
+            </div>
+
+            <p
+              id="delete-feedback"
+              class="form-feedback"
+              role="alert"
+              hidden
+            ></p>
+          </footer>
+        </article>
+
+        <!-- Opened when the user selects Edit story. -->
+        <section
+          class="editor-panel"
+          id="editor"
+          aria-labelledby="editor-heading"
+          hidden
+        >
+          <div class="editor-heading-row">
+            <div>
+              <p class="eyebrow">EDIT STORY</p>
+              <h2 id="editor-heading">Update this story</h2>
+            </div>
+            <button
+              class="icon-button"
+              id="close-editor"
+              type="button"
+              aria-label="Close editor"
+            >
+              ✕
+            </button>
+          </div>
+
+          <form id="edit-form">
+            <div class="form-field">
+              <label for="edit-title">Title</label>
+              <input
+                id="edit-title"
+                name="title"
+                type="text"
+                maxlength="200"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <label for="edit-body">Content</label>
+              <textarea id="edit-body" name="body" rows="8" required></textarea>
+            </div>
+            <div class="form-field">
+              <label for="edit-tags">
+                Tags <span class="muted-label">(separate with commas)</span>
+              </label>
+              <input
+                id="edit-tags"
+                name="tags"
+                type="text"
+                placeholder="life, stories, ideas"
+              />
+            </div>
+            <div class="form-field">
+              <label for="edit-method">HTTP method</label>
+              <select id="edit-method" name="method">
+                <option value="PATCH">PATCH – update selected fields</option>
+                <option value="PUT">PUT – send the full post</option>
+              </select>
+              <p class="field-help">
+                DummyJSON simulates updates. Saved changes remain in this
+                browser.
+              </p>
+            </div>
+            <p class="form-feedback" id="edit-feedback" role="alert" hidden></p>
+            <div class="form-actions">
+              <button class="button button-dark" id="save-post" type="submit">
+                Save changes <span aria-hidden="true">↗</span>
+              </button>
+              <button
+                class="button button-ghost"
+                id="cancel-edit"
+                type="button"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ========== COMMENTS ========== -->
+        <section
+          class="comments-section"
+          id="comments"
+          aria-labelledby="comments-heading"
+          hidden
+        >
+          <div class="comments-top">
+            <div>
+              <p class="eyebrow">CONVERSATION</p>
+              <h2 id="comments-heading">
+                Comments<span class="heading-period">.</span>
+                <span class="comment-counter" id="comments-count"></span>
+              </h2>
+            </div>
+            <p>Share your thoughts on this story.</p>
+          </div>
+
+          <!-- Comment controls are enabled after the article loads. -->
+          <div class="comment-compose">
+            <span class="comment-compose-icon" aria-hidden="true">J</span>
+            <form id="comment-form">
+              <label for="comment-body">Write a comment</label>
+              <textarea
+                id="comment-body"
+                name="body"
+                disabled
+                rows="4"
+                minlength="2"
+                maxlength="1000"
+                placeholder="What do you think about this story?"
+                required
+              ></textarea>
+              <div class="compose-bottom">
+                <p>Comments are saved in this browser for this demo.</p>
+                <button
+                  class="button button-dark"
+                  id="submit-comment"
+                  type="submit"
+                  disabled
+                >
+                  Post comment <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+              <p
+                class="form-feedback"
+                id="comment-feedback"
+                role="alert"
+                hidden
+              ></p>
+            </form>
+          </div>
+
+          <div
+            class="notice notice-error"
+            id="comments-error"
+            role="alert"
+            hidden
+          >
+            <span id="comments-error-message"></span>
+            <button class="notice-action" id="retry-comments" type="button">
+              Try again
+            </button>
+          </div>
+
+          <!-- Comments are loaded separately after the article succeeds. -->
+          <div class="comments-list" id="comments-list" aria-busy="true">
+            <p class="loading-copy" role="status">Loading comments…</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ========== SHARED FOOTER ========== -->
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <a
+          class="brand footer-brand"
+          href="./index.html"
+          aria-label="The Journal homepage"
+        >
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span>the journal<span class="brand-dot">.</span></span>
+        </a>
+        <p>Built with HTML, CSS, JavaScript &amp; DummyJSON.</p>
+      </div>
+    </footer>
+  </body>
+</html>

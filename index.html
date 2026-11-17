@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Character encoding and responsive viewport -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Prevent search engines from indexing this demo -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Website information -->
+    <meta
+      name="description"
+      content="The Journal — a modern blog for stories, ideas, and perspectives."
+    />
+    <title>The Journal | Stories & Perspectives</title>
+
+    <!-- Website favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg" />
+
+    <!-- Google Fonts: Manrope for headings, DM Sans for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+
+  <body>
+    <!-- Accessibility: skip directly to the main content -->
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- Site header -->
+    <header class="site-header">
+      <div class="shell header-inner">
+        <!-- Website branding -->
+        <a class="brand" href="./index.html" aria-label="The Journal homepage">
+          <!-- Decorative logo mark -->
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+
+          <span>the journal<span class="brand-dot">.</span></span>
+        </a>
+
+        <!-- Main navigation -->
+        <nav class="site-nav" aria-label="Main navigation">
+          <a class="nav-link" href="./index.html" aria-current="page"> Home </a>
+
+          <a class="nav-link" href="#about">About</a>
+
+          <a class="nav-cta" href="#stories">
+            All Stories <span aria-hidden="true">↗</span>
+          </a>
+        </nav>
+        <!-- End of main navigation -->
+      </div>
+    </header>
+
+    <!-- Main page content -->
+    <main id="main">
+      <!-- Editorial hero, aligned with the final reference design -->
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow">
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              THE JOURNAL
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              EST. 2026
+            </p>
+
+            <h1 id="hero-heading">Stories worth<br /><em>your time.</em></h1>
+
+            <p class="hero-description">
+              Thoughtful stories, fresh ideas, and new perspectives. Discover
+              something worth reading every day.
+            </p>
+
+            <a class="button button-dark hero-button" href="#stories">
+              Explore stories <span aria-hidden="true">↗</span>
+            </a>
+
+            <div class="hero-bottom">
+              <span class="small-line" aria-hidden="true"></span>
+              <span>AN OPEN SPACE FOR NEW PERSPECTIVES</span>
+            </div>
+          </div>
+
+          <!-- Homepage editorial photograph -->
+          <div class="hero-art">
+            <img
+              class="hero-art-image"
+              src="./assets/images/editorial-magazine.webp"
+              alt="An open editorial magazine resting on a wooden table"
+              width="1024"
+              height="1024"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== FEATURED STORY ========== -->
+      <section class="feature-section shell" aria-labelledby="feature-heading">
+        <!-- Section heading and description -->
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">EDITOR’S PICK</p>
+            <h2 id="feature-heading">
+              In focus<span class="heading-period">.</span>
+            </h2>
+          </div>
+          <p>Our most-read story, straight from DummyJSON.</p>
+        </div>
+
+        <!-- Dynamic featured story, populated when the API responds. -->
+        <div class="featured-post" id="featured-post" aria-live="polite">
+          <!-- Local photograph for the featured story. -->
+          <div class="featured-visual">
+            <img
+              class="featured-image"
+              src="./assets/images/empty_book.webp"
+              alt="An open book"
+              width="1200"
+              height="800"
+            />
+          </div>
+
+          <!-- Preview content; real article details arrive with the API. -->
+          <div class="featured-content">
+            <p class="featured-kicker">EDITOR’S PICK · LOADING</p>
+            <div class="tag-list">
+              <span class="tag">Loading</span>
+            </div>
+            <h3 class="featured-title">Loading featured story…</h3>
+            <p class="featured-description">Fetching the most-read article.</p>
+            <p class="featured-meta">Please wait…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== ALL STORIES SECTION ========== -->
+      <section
+        class="stories-section"
+        id="stories"
+        aria-labelledby="stories-heading"
+      >
+        <div class="shell">
+          <!-- Section heading and introduction -->
+          <h2 id="stories-heading">All Stories</h2>
+          <p>Explore our latest stories and perspectives.</p>
+
+          <!-- ========== SEARCH, FILTER & SORT ========== -->
+
+          <!-- Search, filter and sort the articles from the API. -->
+          <form
+            class="filter-toolbar"
+            id="filters"
+            role="search"
+            aria-label="Find stories"
+          >
+            <!-- Search posts by title or content -->
+            <div class="filter-field">
+              <label for="search">Search stories</label>
+              <input
+                type="search"
+                id="search"
+                name="search"
+                placeholder="Search articles..."
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Filter posts by tag -->
+            <div class="filter-field">
+              <label for="tag-filter">Filter by tag</label>
+              <select id="tag-filter" name="tag">
+                <option value="">All tags</option>
+                <!-- More options will be added using JavaScript -->
+              </select>
+            </div>
+
+            <!-- Sort available posts -->
+            <div class="filter-field">
+              <label for="sort">Sort by</label>
+              <select id="sort" name="sort">
+                <option value="id-asc" selected>Post ID: lowest first</option>
+                <option value="id-desc">Post ID: highest first</option>
+                <option value="views-desc">Most viewed</option>
+                <option value="likes-desc">Most liked</option>
+                <option value="title-asc">Title A–Z</option>
+              </select>
+            </div>
+
+            <!-- Reset search, filter, and sort fields -->
+            <button type="reset" class="reset-filters">Clear filters</button>
+          </form>
+
+          <!-- DummyJSON simulates writes; our browser remembers successful changes. -->
+          <div class="demo-tools">
+            <p>Changes are stored only in this browser (demo mode).</p>
+            <button id="reset-demo" class="reset-demo" type="button">
+              Reset demo data
+            </button>
+          </div>
+          <p
+            id="reset-demo-status"
+            class="reset-demo-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <!-- ========== POST LIST ========== -->
+
+          <div class="results-line">
+            <!-- Announces loading progress and the number of visible articles. -->
+            <p id="result-count" role="status">Loading stories…</p>
+          </div>
+
+          <!-- API errors will be displayed here -->
+          <div class="notice notice-error" id="feed-error" role="alert" hidden>
+            <p id="feed-error-message">
+              Unable to load stories. Please try again.
+            </p>
+
+            <button type="button" id="retry-feed">Try again</button>
+          </div>
+
+          <!-- Article cards are generated dynamically by app.js. -->
+          <div class="posts-grid" id="posts-grid" aria-busy="false"></div>
+
+          <!-- Combined pagination -->
+          <nav
+            class="pagination"
+            id="pagination"
+            aria-label="Story pages"
+            hidden
+          >
+            <button type="button" id="prev-page" class="button button-outline">
+              ← Previous
+            </button>
+
+            <!-- Page numbers are generated by JavaScript -->
+            <div
+              id="page-numbers"
+              class="page-numbers"
+              role="group"
+              aria-label="Select page"
+            ></div>
+
+            <button type="button" id="next-page" class="button button-dark">
+              Next →
+            </button>
+
+            <!-- Jump directly to a page -->
+            <form id="page-jump-form" class="page-jump">
+              <label for="page-jump-input">Jump to page</label>
+
+              <input
+                type="number"
+                id="page-jump-input"
+                min="1"
+                step="1"
+                required
+              />
+
+              <button type="submit" class="button button-outline">Go</button>
+            </form>
+
+            <span id="page-info" class="pagination-status" role="status">
+              Page 1
+            </span>
+          </nav>
+
+          <!-- Displayed when search or filters return no results -->
+          <div class="empty-state" id="empty-state" hidden>
+            <h3>No stories available</h3>
+            <p>There are no articles available at the moment.</p>
+          </div>
+        </div>
+      </section>
+      <!-- ========== END ALL STORIES SECTION ========== -->
+
+      <!-- About the website -->
+      <section class="about-section" id="about" aria-labelledby="about-heading">
+        <div class="shell about-grid">
+          <div>
+            <p class="eyebrow">ABOUT THE JOURNAL</p>
+            <h2 id="about-heading">Made for the <em>curious.</em></h2>
+          </div>
+          <div>
+            <p>
+              The Journal is an independent digital magazine for stories and
+              perspectives. All article titles, body text, and tags come
+              directly from the DummyJSON REST API — no fabricated articles.
+            </p>
+            <p class="about-small">
+              DummyJSON simulates write operations. After successful API
+              requests, this demo stores changes in your browser; the original
+              server posts remain unchanged.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- END ABOUT SECTION -->
+    </main>
+
+    <!-- Website footer -->
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <a
+          class="brand footer-brand"
+          href="./index.html"
+          aria-label="The Journal homepage"
+        >
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+
+          <span>the journal<span class="brand-dot">.</span></span>
+        </a>
+
+        <p>Built with HTML, CSS, JavaScript &amp; DummyJSON.</p>
+      </div>
+    </footer>
+    <!-- END FOOTER -->
+
+    <!-- Homepage JavaScript module -->
+    <script type="module" src="./assets/js/pages/app.js"></script>
+  </body>
+</html>

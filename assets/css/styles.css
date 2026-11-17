@@ -1,0 +1,2001 @@
+/* ============================================================
+   THE JOURNAL — MAIN STYLESHEET
+   Shared by index.html and post.html.
+   White, charcoal and cool-grey editorial theme.
+
+   CSS CLASS REFERENCE
+
+   Accessibility:
+   .skip-link       - Skip directly to the main content.
+
+   Reusable layout:
+   .shell           - Centers content and limits its width.
+   .header-inner    - Arranges the header with Flexbox.
+   .footer-inner    - Arranges the footer with Flexbox.
+
+   Header and navigation:
+   .site-header     - Header background and border.
+   .brand           - Website name and logo.
+   .brand-mark      - Decorative logo symbol.
+   .brand-dot       - Colored dot after the name.
+   .site-nav        - Navigation layout.
+   .nav-link        - Regular navigation links.
+   .nav-cta         - Dark All Stories navigation button.
+
+   Homepage:
+   .hero             - Editorial hero section.
+   .hero-grid        - Two-column text and CSS illustration layout.
+   .hero-art         - CSS-only hero artwork.
+   .eyebrow          - Small uppercase section label.
+   .feature-section  - Featured Story section.
+   .featured-post    - Featured article preview card.
+   .featured-content - Featured article text layout.
+   .stories-section  - All Stories background and spacing.
+   .about-section    - About section background and spacing.
+   .about-grid       - Two-column About section layout.
+   .about-small      - Smaller supporting paragraph.
+
+   Browse controls (M2):
+   .filter-toolbar  - Search, filter and sort form layout.
+   .filter-field    - One labeled form control.
+   .reset-filters   - Clear filters button.
+   .posts-grid      - Responsive list of article preview cards.
+   .post-card       - Individual story preview (flex column).
+   .card-top        - Story number and decorative arrow.
+   .card-main       - Tags, title, and excerpt.
+   .card-meta       - Views/likes metadata.
+   .card-actions    - Read, edit, and delete controls.
+   .notice-error    - API error message.
+   .empty-state     - No-results message.
+
+   Post details and forms (M2):
+   .detail-shell    - Narrow article reading column.
+   .back-link       - Return link to story list.
+   .article-title   - Large, responsive article heading.
+   .article-actions - Edit and delete button layout.
+   .button          - Reusable button foundation.
+   .button-dark     - Primary dark button.
+   .button-outline  - Outlined secondary button.
+   .button-danger   - Destructive-action button.
+   .comments-section - Comment list and composition area.
+   .comment-compose - Comment form panel.
+   .form-field      - Consistent labels, inputs, and textareas.
+   .editor-panel    - Hidden-until-edit form panel.
+
+   Footer:
+   .footer          - Dark footer.
+   .footer-brand    - Logo variant for dark backgrounds.
+   ============================================================ */
+
+/* ========== 01. DESIGN TOKENS & BASE STYLES ========== */
+
+:root {
+  --danger: #b63b3b;
+  --ink: #16191d;
+  --ink-soft: #545b65;
+  --muted: #747b85;
+  --line: #e8ebef;
+  --container: 1200px;
+
+  font-family: "DM Sans", Arial, sans-serif;
+  color: var(--ink);
+  background-color: #fff;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep the footer at the bottom when a page has little content. */
+main {
+  flex: 1;
+}
+
+/* Form controls should use the same font as the rest of the website. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Respect dynamically hidden loading, error, and empty states. */
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Manrope", "DM Sans", Arial, sans-serif;
+}
+
+p {
+  line-height: 1.7;
+}
+
+.shell {
+  width: min(var(--container), calc(100% - 64px));
+  margin-inline: auto;
+}
+
+/* ========== 02. ACCESSIBILITY ========== */
+
+:focus-visible {
+  outline: 3px solid #677e98;
+  outline-offset: 4px;
+}
+
+/* The skip link becomes visible when reached with the keyboard. */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 15px;
+  z-index: 1000;
+  padding: 12px 20px;
+  background-color: #fff;
+  color: var(--ink);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ========== 03. HEADER & NAVIGATION ========== */
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background-color: #fff;
+}
+
+.header-inner {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Manrope", "DM Sans", Arial, sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  white-space: nowrap;
+}
+
+.brand-dot {
+  color: #87909b;
+}
+
+/* The three spans draw the decorative lines inside the logo. */
+.brand-mark {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 30px;
+  height: 33px;
+  border-radius: 8px;
+  background-color: #22272d;
+  transform: rotate(-8deg);
+}
+
+.brand-mark span {
+  position: absolute;
+  left: 9px;
+  width: 14px;
+  height: 3px;
+  border-radius: 3px;
+  background-color: #f5f8ed;
+}
+
+.brand-mark span:first-child {
+  top: 10px;
+}
+
+.brand-mark span:nth-child(2) {
+  top: 16px;
+}
+
+.brand-mark span:last-child {
+  top: 22px;
+  width: 10px;
+  background-color: #aab6c4;
+}
+
+/* --- Navigation links --- */
+
+.site-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Default navigation links */
+.site-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-soft);
+  transition: color 0.2s ease;
+}
+
+/* Highlight hovered and current navigation links */
+.site-nav .nav-link:hover,
+.site-nav .nav-link[aria-current="page"] {
+  color: var(--ink);
+}
+
+/* All Stories — dark pill-shaped navigation link */
+.site-nav .nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 44px;
+  padding: 11px 20px;
+
+  background-color: #17191d;
+  color: #fff;
+  border-radius: 999px;
+
+  transition: background-color 0.2s ease;
+}
+
+/* Hover state */
+.site-nav .nav-cta:hover {
+  background-color: #383f49;
+  color: #fff;
+}
+
+/* ========== 04. HOMEPAGE HERO ========== */
+
+/* Split editorial layout with CSS-only artwork on the right. */
+.hero {
+  overflow: hidden;
+  min-height: 590px;
+  background-color: #f6f7f9;
+  border-bottom: 1px solid #edf0f2;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: 55px;
+  min-height: 590px;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  padding-block: 65px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 17px;
+  color: #7e8793;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.eyebrow-line {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background-color: #8f9ba8;
+}
+
+.hero-eyebrow {
+  margin-bottom: 32px;
+  color: #697583;
+  font-size: 10px;
+}
+
+.hero h1 {
+  max-width: 660px;
+  margin-bottom: 26px;
+  font-family: "Manrope", "DM Sans", Arial, sans-serif;
+  font-size: clamp(52px, 5.5vw, 82px);
+  font-weight: 800;
+  line-height: 1.09;
+  letter-spacing: -0.078em;
+  overflow-wrap: anywhere;
+}
+
+.hero h1 em {
+  color: #788493;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.hero-description {
+  max-width: 440px;
+  margin-bottom: 29px;
+  color: #5c6672;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+/* Reuse the button styles from the rest of the site. */
+.hero-button {
+  gap: 26px;
+  padding: 15px 24px;
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 55px;
+  color: #858f9b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.small-line {
+  width: 48px;
+  height: 1px;
+  background-color: #aab4bf;
+}
+
+.hero-art {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  height: 490px;
+  border-radius: 20px;
+  box-shadow: 0 25px 70px rgb(27 31 36 / 10%);
+}
+
+/* Display the editorial photograph inside the hero. */
+.hero-art-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ========== 05. FEATURED STORY ========== */
+
+/* Center the feature section using the shared .shell container. */
+.feature-section {
+  padding-block: 88px 95px;
+}
+/* Display the featured story image. */
+.featured-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Place the section heading and supporting text at opposite edges. */
+.section-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.section-intro .eyebrow {
+  margin-bottom: 10px;
+}
+
+.section-intro h2 {
+  margin: 0;
+  font-size: clamp(34px, 3.5vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.065em;
+}
+
+.heading-period {
+  color: #8c98a6;
+}
+
+.section-intro > p {
+  margin: 0 0 6px;
+  color: #78818b;
+  font-size: 13px;
+}
+
+/* The card has an image column and a text column. */
+.featured-post {
+  display: grid;
+  grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+  min-height: 330px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background-color: #fff;
+}
+
+/* The image container keeps the feature responsive. */
+.featured-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #dce3ea, #c7d0db 55%, #b8c4d0);
+}
+
+/* Flexbox pushes article metadata towards the bottom of the card. */
+.featured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 38px 44px 27px;
+}
+
+.featured-kicker {
+  margin-bottom: 21px;
+  color: #657587;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.tag {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background-color: #f0f3f6;
+  color: #5f6d7a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.featured-title {
+  margin: 18px 0 12px;
+  font-size: clamp(28px, 2.7vw, 40px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.055em;
+}
+
+.featured-description {
+  margin-bottom: 22px;
+  color: #5a6470;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.featured-meta {
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* ========== 06. ALL STORIES SECTION ========== */
+
+/* Cards are text-only; unnecessary artwork has been removed. */
+.post-card .card-top {
+  margin-bottom: 20px;
+}
+
+/* Background and vertical spacing for the Stories section. */
+.stories-section {
+  padding-block: 80px;
+  background-color: #f7f8fa;
+}
+
+/* Shared heading properties for Stories and About. */
+.stories-section h2,
+.about-grid h2 {
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+/* All Stories heading: larger, bold typography. */
+.stories-section h2 {
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+}
+
+/* Style only the Stories introduction, not article card text. */
+.stories-section > .shell > p {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: var(--ink-soft);
+}
+
+/* ========== 07. ABOUT THE JOURNAL ========== */
+
+/* Background, border, and vertical spacing. */
+.about-section {
+  padding-block: 75px;
+  border-top: 1px solid var(--line);
+  background-color: #fff;
+}
+
+/* Two-column layout: heading on the left, description on the right. */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 130px;
+}
+
+/* About heading: lighter weight than the Stories heading. */
+.about-grid h2 {
+  font-size: clamp(34px, 4vw, 50px);
+  font-weight: 600;
+  letter-spacing: -0.065em;
+}
+
+/* Highlight "curious." in gray without italic styling. */
+.about-grid h2 em {
+  color: #7d8c9f;
+  font-style: normal;
+}
+
+/* Main About paragraph, independent of the Stories introduction. */
+.about-grid > div:last-child > p {
+  max-width: none;
+  margin-bottom: 0;
+  color: #56616d;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+/* Secondary paragraph about DummyJSON write operations. */
+.about-grid > div:last-child > .about-small {
+  margin-top: 26px;
+  color: #8793a1;
+  font-size: 12px;
+}
+
+/* ========== 08. FOOTER ========== */
+
+.footer {
+  padding-block: 30px;
+  background-color: #171a1e;
+  color: #e2e5e8;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.footer-brand {
+  color: #fff;
+}
+
+.footer-brand .brand-mark {
+  background-color: #fff;
+}
+
+.footer-brand .brand-mark span {
+  background-color: #22272d;
+}
+
+.footer-brand .brand-mark span:last-child {
+  background-color: #87909b;
+}
+
+.footer-inner p {
+  margin: 0;
+  color: #a6afb8;
+  font-size: 12px;
+}
+
+/* ========== 09. SEARCH, FILTER & SORT ========== */
+
+/* Search, tag filter, sorting and reset controls share one toolbar. */
+.filter-toolbar {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.7fr)
+    minmax(150px, 1fr)
+    minmax(150px, 1fr)
+    auto;
+  align-items: end;
+  gap: 15px;
+  margin-top: 36px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.filter-field {
+  min-width: 0;
+}
+
+/* A visible label is needed even when a placeholder is present. */
+.filter-field label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.filter-field input,
+.filter-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+  background-color: #fff;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.filter-field input::placeholder {
+  color: #747b85;
+}
+
+/* Keep the global keyboard outline and provide an additional field cue. */
+.filter-field input:focus-visible,
+.filter-field select:focus-visible {
+  border-color: #677e98;
+}
+
+.reset-filters {
+  min-height: 44px;
+  padding: 10px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.reset-filters:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ========== 10. RESULTS, ERRORS & EMPTY STATES ========== */
+
+/* JavaScript will update this text once API data becomes available. */
+.stories-section #result-count {
+  max-width: none;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Title/count and preview status share one row. */
+.results-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin: 29px 0 18px;
+}
+
+/* The visible status label updates as the API responds. */
+.design-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #7e8793;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.design-indicator > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #819eb1;
+}
+
+/* The final reference uses three equal card columns on desktop. */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 21px;
+}
+
+/* One card uses Flexbox to keep metadata and actions at the bottom. */
+.post-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 370px;
+  padding: 28px;
+  border: 1px solid #e6ebf0;
+  border-radius: 14px;
+  background-color: #fff;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgb(29 47 62 / 7%);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 35px;
+}
+
+.card-number {
+  color: #8793a1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.card-arrow {
+  color: #8793a1;
+  font-size: 18px;
+}
+
+/* flex: 1 gives the article body the remaining vertical space. */
+.card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  margin: 17px 0 12px;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.055em;
+}
+
+.card-title-link:hover .card-title {
+  color: #586f8a;
+}
+
+/* Card excerpts have independent typography from section introductions. */
+.card-excerpt {
+  max-width: none;
+  margin-bottom: 23px;
+  color: #697480;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: auto;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #ebeff3;
+  color: #8793a1;
+  font-size: 11px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-top: 15px;
+}
+
+.card-read,
+.card-secondary {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.card-read {
+  margin-right: auto;
+}
+
+.card-read:hover,
+.card-secondary:not(:disabled):hover {
+  color: #586f8a;
+}
+
+.card-secondary {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #64758a;
+}
+
+.card-delete {
+  color: #b77974;
+}
+
+/* Preview-only controls are disabled until JavaScript is implemented. */
+.card-actions button:disabled {
+  opacity: 0.55;
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block: 18px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.notice-error {
+  border: 1px solid #f6c9c3;
+  background-color: #fff0ee;
+  color: #953d34;
+}
+
+.notice-error p {
+  max-width: none;
+  margin: 0;
+  color: inherit;
+}
+
+/* Retry is an action, not a navigation link. */
+#retry-feed {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#retry-feed:hover {
+  background-color: #ffe2de;
+}
+
+.empty-state {
+  padding: 48px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background-color: #f7f8fa;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+.empty-state p {
+  max-width: none;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* Center the Load more button beneath the article grid. */
+#load-more {
+  display: block;
+  margin: 2rem auto 0;
+}
+
+/* ========== ARTICLE PAGINATION ========== */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 36px;
+}
+
+#page-info {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ========== COMBINED PAGINATION ========== */
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.page-number {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #253041;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.page-number:hover {
+  background-color: #eef1f5;
+}
+
+.page-number.active {
+  background-color: #17191d;
+  color: #fff;
+}
+
+.page-ellipsis {
+  padding: 0 5px;
+  color: #8793a1;
+}
+
+.page-jump {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.page-jump label {
+  color: #697480;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.page-jump input {
+  width: 70px;
+  height: 42px;
+  padding: 8px;
+  border: 1px solid #e6ebf0;
+  border-radius: 10px;
+  background: #fff;
+  color: #253041;
+  font: inherit;
+  text-align: center;
+}
+
+.pagination-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Responsive pagination */
+@media (max-width: 600px) {
+  .page-numbers {
+    order: 3;
+    width: 100%;
+  }
+
+  .page-jump {
+    order: 4;
+  }
+}
+
+/* ========== 11. POST DETAILS PAGE ========== */
+
+/* Limit the width so long articles remain comfortable to read. */
+.detail-shell {
+  max-width: 900px;
+  padding-block: 48px 100px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid #e6ebf0;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #253041;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.back-link:hover {
+  background-color: #f3f5f7;
+}
+
+.back-link:hover {
+  color: var(--ink);
+}
+
+.article-content {
+  margin-top: 55px;
+}
+
+.article-header .eyebrow {
+  color: #7e8793;
+}
+
+/* Responsive headline based on the final project's editorial typography. */
+.article-title {
+  max-width: 800px;
+  margin-bottom: 25px;
+  font-size: clamp(43px, 6vw, 75px);
+  font-weight: 800;
+  line-height: 1.09;
+  letter-spacing: -0.065em;
+  overflow-wrap: anywhere;
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: #788594;
+  font-size: 12px;
+}
+
+.author-badge {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background-color: #e9edf2;
+  color: #47596b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.meta-author {
+  color: #586571;
+  font-weight: 800;
+}
+
+.meta-dot {
+  color: #bac4ce;
+}
+
+/* Displays the article loading state. */
+.preview-note {
+  margin-bottom: 32px;
+  color: #8793a1;
+  font-size: 12px;
+}
+
+/* Decorative article artwork drawn using pseudo-elements. */
+.article-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 8 / 3;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: #dce4eb;
+}
+
+.article-visual::before {
+  content: "";
+  position: absolute;
+  top: -220px;
+  right: -60px;
+  width: 450px;
+  height: 450px;
+  border: 1px solid #b3c0cb;
+  border-radius: 50%;
+}
+
+.article-visual::after {
+  content: "";
+  position: absolute;
+  top: 35px;
+  left: -340px;
+  width: 500px;
+  height: 500px;
+  transform: rotate(43deg);
+  border-radius: 65px;
+  background-color: #c4d1dd;
+}
+
+.article-visual-asterisk {
+  position: relative;
+  z-index: 1;
+  transform: rotate(-20deg);
+  color: #f8fafc;
+  font-size: 190px;
+  line-height: 1;
+}
+
+.article-visual-caption {
+  position: absolute;
+  right: 27px;
+  bottom: 21px;
+  z-index: 2;
+  color: #344352;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+/* Georgia is intentional: the article body uses a traditional reading font. */
+.article-body-wrap {
+  padding: 65px 40px 40px;
+}
+
+#post-content {
+  overflow-wrap: anywhere;
+}
+
+.article-body {
+  margin: 0 0 22px;
+  color: #303840;
+  font-family: Georgia, serif;
+  font-size: clamp(18px, 2vw, 21px);
+  line-height: 1.95;
+  white-space: pre-line;
+}
+
+.article-body:first-child::first-letter {
+  font-size: 1.45em;
+  font-weight: 700;
+}
+
+.article-footer {
+  margin-top: 10px;
+  padding: 28px 40px;
+  border-block: 1px solid var(--line);
+}
+
+.article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+/* ========== 12. REUSABLE BUTTONS ========== */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.button-dark {
+  background-color: var(--ink);
+  color: #fff;
+}
+
+.button-outline {
+  border-color: var(--line);
+  background-color: #fff;
+  color: var(--ink);
+}
+
+.button-ghost {
+  background-color: transparent;
+  color: var(--ink-soft);
+}
+
+.button-danger {
+  border-color: #f6c9c3;
+  background-color: #fff0ee;
+  color: var(--danger);
+}
+
+/* Hover effects apply only to functional, enabled actions. */
+.button-dark:hover:not(:disabled) {
+  background-color: #383f49;
+}
+
+.button-outline:hover:not(:disabled),
+.button-ghost:hover:not(:disabled) {
+  background-color: #f7f8fa;
+}
+
+.button-danger:hover:not(:disabled) {
+  background-color: #ffe2de;
+}
+
+/* ========== 13. COMMENTS SECTION ========== */
+
+.comments-section {
+  margin-top: 86px;
+}
+
+.comments-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.comments-top .eyebrow {
+  margin-bottom: 8px;
+}
+
+.comments-top h2 {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.comment-counter {
+  color: #94a197;
+  font:
+    700 15px "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.comments-top > p {
+  margin: 0 0 5px;
+  color: #7c8b80;
+  font-size: 12px;
+}
+
+/* Composer is a horizontal Flexbox row: avatar + form. */
+.comment-compose {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 25px;
+  border: 1px solid #e5eaf0;
+  border-radius: 14px;
+  background-color: #f7f8fa;
+}
+
+.comment-compose-icon,
+.comment-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #e9edf2;
+  color: #47596b;
+  font-weight: 800;
+}
+
+.comment-compose-icon {
+  width: 35px;
+  height: 35px;
+  font-size: 12px;
+}
+
+.comment-compose form {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-compose label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.comment-compose textarea {
+  display: block;
+  width: 100%;
+  min-height: 125px;
+  padding: 12px 14px;
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+  background-color: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.compose-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.compose-bottom p {
+  margin: 0;
+  color: #84909b;
+  font-size: 11px;
+}
+
+.comments-list {
+  margin-top: 24px;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 23px 5px;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment-avatar {
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+}
+
+.comment-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.comment-author {
+  margin: 0;
+  font-size: 13px;
+}
+
+.comment-local {
+  color: #887363;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.comment-text {
+  margin: 10px 0 12px;
+  color: #56616d;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.comment-likes {
+  color: #8997a7;
+  font-size: 11px;
+}
+
+.loading-copy {
+  padding: 15px 0;
+  color: #8793a1;
+  font-size: 13px;
+}
+
+/* ========== 14. FORM FIELDS & FEEDBACK ========== */
+
+.form-field {
+  margin-bottom: 19px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 14px;
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+  background-color: #fff;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.form-field textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form-field input:focus-visible,
+.form-field select:focus-visible,
+.form-field textarea:focus-visible,
+.comment-compose textarea:focus-visible {
+  border-color: #677e98;
+}
+
+.muted-label {
+  color: #84909b;
+  font-weight: 500;
+}
+
+.field-help {
+  margin: 6px 0 0;
+  color: #788594;
+  font-size: 11px;
+}
+
+.form-feedback {
+  margin: 12px 0;
+  padding: 11px;
+  border: 1px solid #f6c9c3;
+  border-radius: 7px;
+  background-color: #fff0ee;
+  color: #953d34;
+  font-size: 12px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.notice-action {
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background-color: transparent;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* ========== 15. EDIT POST FORM ========== */
+
+.editor-panel {
+  margin-block: 42px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background-color: #fff;
+  box-shadow: 0 18px 50px rgb(19 27 38 / 5.5%);
+}
+
+.editor-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.editor-heading-row .eyebrow {
+  margin-bottom: 8px;
+}
+
+.editor-heading-row h2 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: -0.04em;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 7px;
+  background-color: #e8edf2;
+  color: #344352;
+}
+
+/* ========== 16. RESPONSIVE LAYOUT ========== */
+
+/* Two filter columns on small laptops and tablets. */
+@media (max-width: 1020px) {
+  .hero-grid {
+    gap: 27px;
+  }
+
+  .hero-art {
+    height: 430px;
+  }
+
+  .filter-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* At tablet widths the search fills row 1 and reset fills row 3. */
+  .filter-toolbar > .filter-field:first-child,
+  .filter-toolbar > .reset-filters {
+    grid-column: 1 / -1;
+  }
+
+  .filter-toolbar > .reset-filters {
+    justify-self: start;
+  }
+
+  .posts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Reduce the large desktop gap on smaller laptops. */
+  .about-grid {
+    gap: 60px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* Match the final reference's flexible mobile header. */
+  .site-header {
+    height: auto;
+    min-height: 70px;
+  }
+
+  .shell {
+    width: calc(100% - 36px);
+  }
+
+  .header-inner {
+    min-height: 70px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-block: 12px;
+  }
+
+  .site-nav {
+    justify-content: center;
+    gap: 12px 18px;
+  }
+
+  /* Smaller navigation button matches the final mobile design. */
+  .site-nav .nav-cta {
+    gap: 12px;
+    padding: 9px 15px;
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: 0;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-bottom: 30px;
+  }
+
+  .hero-copy {
+    padding-block: 65px 40px;
+  }
+
+  .hero h1 {
+    font-size: clamp(47px, 9vw, 68px);
+  }
+
+  .hero-bottom {
+    margin-top: 30px;
+  }
+
+  .hero-art {
+    height: 350px;
+  }
+
+  /* Stack the featured card under its artwork on narrow screens. */
+  .feature-section {
+    padding-block: 65px;
+  }
+
+  .section-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .featured-post {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .featured-visual {
+    min-height: 225px;
+    max-height: 225px;
+  }
+
+  .featured-content {
+    padding: 28px;
+  }
+
+  .stories-section {
+    padding-block: 60px;
+  }
+
+  /* Article body, artwork, and comments shift to a smaller reading width. */
+  .article-content {
+    margin-top: 35px;
+  }
+
+  .article-visual {
+    height: 220px;
+  }
+
+  .article-body-wrap {
+    padding: 35px 15px;
+  }
+
+  .article-footer {
+    padding: 22px 15px;
+  }
+
+  .comments-section {
+    margin-top: 65px;
+  }
+
+  .comments-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* Stack the About heading above the description on mobile. */
+  .about-section {
+    padding-block: 54px;
+  }
+
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Give the footer description its own row on mobile. */
+  .footer-inner p {
+    order: 3;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .notice {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Preserve comfortable article and form spacing on narrow screens. */
+  .detail-shell {
+    padding-block: 30px 60px;
+  }
+
+  .article-title {
+    font-size: clamp(34px, 9vw, 48px);
+  }
+
+  .comment-compose,
+  .editor-panel {
+    padding: 18px;
+  }
+
+  .featured-content {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 530px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .brand {
+    font-size: 21px;
+  }
+
+  /* Let the links use the whole available width. */
+  .site-nav {
+    width: 100%;
+    gap: 12px 18px;
+  }
+
+  .hero-copy {
+    padding-top: 50px;
+  }
+
+  .hero h1 {
+    font-size: clamp(43px, 11vw, 59px);
+  }
+
+  .hero-art {
+    height: 265px;
+    border-radius: 13px;
+  }
+
+  /* Keep the decorative caption compact on small screens. */
+  .hero-art-caption {
+    left: 12px;
+    bottom: 12px;
+    font-size: 8px;
+  }
+
+  .section-intro h2 {
+    font-size: 32px;
+  }
+
+  /* As in the reference, the toolbar and cards stack at 530px. */
+  .filter-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 13px;
+    padding: 15px;
+  }
+
+  .posts-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .results-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .article-title {
+    font-size: clamp(35px, 10vw, 53px);
+  }
+
+  .article-meta {
+    gap: 8px;
+  }
+
+  .article-visual {
+    height: 180px;
+  }
+
+  .article-visual-asterisk {
+    font-size: 150px;
+  }
+
+  .editor-panel {
+    padding: 20px;
+  }
+
+  .comment-compose {
+    gap: 9px;
+    padding: 15px;
+  }
+
+  .comment-compose-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .compose-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .compose-bottom .button {
+    width: 100%;
+  }
+}
+
+/* Extra-compact navigation, matching the final reference at 320px. */
+@media (max-width: 320px) {
+  .brand {
+    font-size: 19px;
+  }
+
+  .site-nav {
+    gap: 8px 12px;
+  }
+
+  .site-nav .nav-cta {
+    padding-inline: 12px;
+  }
+}
+
+/* ========== 17. REDUCED MOTION ========== */
+
+/* Respect the user's reduced-motion setting. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .site-nav .nav-link,
+  .site-nav .nav-cta,
+  .post-card {
+    transition: none;
+  }
+
+  .post-card:hover {
+    transform: none;
+  }
+}
+
+/* ========== GREY PLACEHOLDERS — NO IMAGES OR EXTERNAL IMAGE API ========== */
+.hero-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #e0e5eb 0%, #ccd5df 100%);
+}
+
+.hero-art::before {
+  content: "";
+  position: absolute;
+  width: 80%;
+  aspect-ratio: 1;
+  left: -38%;
+  bottom: -55%;
+  border: 1px solid #b3bfca;
+  border-radius: 50%;
+}
+
+.hero-art-letter {
+  font:
+    800 clamp(180px, 23vw, 350px) / 1 "Manrope",
+    sans-serif;
+  letter-spacing: -0.13em;
+  transform: rotate(-12deg);
+  color: #fff;
+  text-shadow: 15px 17px 0 #bac6d1;
+}
+
+.hero-art-caption {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #536170;
+}
+
+.demo-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  color: #707b87;
+  font-size: 12px;
+}
+
+.demo-tools p {
+  margin: 0;
+}
+.reset-demo {
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 1px solid #bcc7d1;
+  border-radius: 9px;
+  background: #fff;
+  color: #344253;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.reset-demo:hover {
+  background: #e9eef3;
+}
+.reset-demo-status {
+  min-height: 18px;
+  margin: 0 0 8px;
+  color: #436154;
+  font-size: 12px;
+}
+
+/* Article-page reset button: outlined, rounded and keyboard accessible. */
+.article-actions #reset-demo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 2px solid #e2e2e2;
+  border-radius: 22px;
+  background: #fff;
+  color: #17191e;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.article-actions #reset-demo:hover {
+  background: #f5f6f8;
+  border-color: #bfc4cc;
+}
+
+.article-actions #reset-demo:focus-visible {
+  outline: 3px solid #64748b;
+  outline-offset: 3px;
+}

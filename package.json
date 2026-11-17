@@ -1,0 +1,14 @@
+{
+  "name": "the-journal-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Responsive vanilla JavaScript blog with DummyJSON CRUD, search, filters and local demo reset",
+  "scripts": {
+    "test": "node --test tests/api.test.mjs tests/storage.test.mjs tests/structure.test.mjs tests/utils.test.mjs",
+    "test:browser": "node --test tests/browser.test.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
+  }
+}
